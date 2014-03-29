@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 
 
-class User(ndb.Model):
+class UserInfo(ndb.Model):
     user_id = ndb.IntegerProperty()
     pss = ndb.StringProperty()
     name = ndb.StringProperty()
@@ -13,4 +13,4 @@ class User(ndb.Model):
     contacts = Contacts()
 
 class Contacts(ndb.Model):
-    users = ndb.StructuredProperty(User, repeated=True)
+    users = ndb.StructuredProperty(UserInfo, repeated=True)

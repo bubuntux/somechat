@@ -14,38 +14,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import cgi
-import datetime
 import webapp2
 
+
+import os
+parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.sys.path.insert(0,parentdir)
+import datetime, sys
+
+if sys.version_info >= (3, 0):
+    raw_input = input
+
+from Yowsup.connectionmanager import YowsupConnectionManager
+
+from app.Models import *
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
-guestbook_key = ndb.Key('Guestbook', 'default_guestbook')
 
-class Greeting(ndb.Model):
-    author = ndb.UserProperty()
-    content = ndb.TextProperty()
-    date = ndb.DateTimeProperty(auto_now_add=True)
+
+user_key = ndb.Key('UserInfo', '1', 'tel_country_code', '52', 'tel', '18112813034', 'whats_app_info', 'tlu5MSojcuXy13AbquA3SUV5e/0=')
 
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.out.write('<html><body>')
-
-        greetings = ndb.gql('SELECT * '
-                            'FROM Greeting '
-                            'WHERE ANCESTOR IS :1 '
-                            'ORDER BY date DESC LIMIT 10',
-                            guestbook_key)
-
-        for greeting in greetings:
-            if greeting.author:
-                self.response.out.write('<b>%s</b> wrote:' % greeting.author.nickname())
-            else:
-                self.response.out.write('An anonymous person wrote:')
-            self.response.out.write('<blockquote>%s</blockquote>' %
-                                    cgi.escape(greeting.content))
 
 
         self.response.out.write("""
@@ -57,10 +50,10 @@ class MainPage(webapp2.RequestHandler):
       </html>""")
 
 
-class Guestbook(webapp2.RequestHandler):
+class SendMessage(webapp2.RequestHandler):
     def post(self):
-        greeting = Greeting(parent=guestbook_key)
-
+        user_info = user_key.get()
+        user_info.
         if users.get_current_user():
             greeting.author = users.get_current_user()
 
@@ -70,6 +63,4 @@ class Guestbook(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-                                  ('/whatsapp', MainPage),
-                                  ('/sign', Guestbook)
-                              ], debug=True)
+                                  ('/whatsapp', MainPage), ('/send', SendMessage)], debug=True)
