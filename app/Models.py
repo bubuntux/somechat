@@ -9,7 +9,7 @@ class User(ndb.Model):
     tel_country_code = ndb.IntegerProperty()
     tel = ndb.IntegerProperty()
     face_info = ndb.StringProperty()
-    whatsup_info = ndb.StringProperty()
+    whats_app_info = ndb.StringProperty()
     contacts = Contacts()
 
 class Contacts(ndb.Model):

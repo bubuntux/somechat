@@ -10,7 +10,11 @@ handlers:
   upload: favicon\.ico
 
 - url: .*
-  script: main.app
+  script: whatsApp.app
+
+# TODO WTF?
+#- url: .*
+#  script: main.app
 
 libraries:
 - name: webapp2
