@@ -8,18 +8,9 @@ class User(ndb.Model):
     email = ndb.StringProperty()
     tel_country_code = ndb.IntegerProperty()
     tel = ndb.IntegerProperty()
-    supInfo = WhatsupInfo()
-    faceInfo = FacebookInfo()
+    face_info = ndb.StringProperty()
+    whatsup_info = ndb.StringProperty()
     contacts = Contacts()
-
-
-class WhatsupInfo(ndb.Model):
-    pss = ndb.StringProperty()
-
-
-class FacebookInfo(ndb.Model):
-    pss = ndb.StringProperty()
-
 
 class Contacts(ndb.Model):
     users = ndb.StructuredProperty(User, repeated=True)
