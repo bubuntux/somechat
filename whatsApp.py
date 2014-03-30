@@ -17,30 +17,12 @@
 import base64
 import unicodedata
 
-import webapp2
+from google.appengine.api import users
 
 from Yowsup.examples.EchoClient import WhatsappEchoClient
 
-
-class MainPage(webapp2.RequestHandler):
-    def get(self):
-        self.response.out.write('<html><body>')
-        self.response.out.write("""
-          <form action="/send" method="post">
-            <div><textarea name="content" rows="3" cols="60"></textarea></div>
-            <div><input type="submit" value="Sign Guestbook"></div>
-          </form>
-        </body>
-      </html>""")
-
-
-class SendMessage(webapp2.RequestHandler):
-    def post(self):
-        message = unicodedata.normalize('NFKD', self.request.get('content')).encode('ascii', 'ignore')
-        wa = WhatsappEchoClient('5212281301632', message, False)
-        pss = base64.b64decode(bytes('tlu5MSojcuXy13AbquA3SUV5e/0='.encode('utf-8')))
-        wa.login(5218112813034, pss)
-        self.redirect('/whatsapp')
-
-
-app = webapp2.WSGIApplication([('/whatsapp', MainPage), ('/send', SendMessage)], debug=True)
+def sendMessage(to, message, user=users.get_current_user(), ):
+    message = unicodedata.normalize('NFKD', message).encode('ascii', 'ignore')
+    wa = WhatsappEchoClient('5212281301632', message, False)
+    pss = base64.b64decode(bytes('tlu5MSojcuXy13AbquA3SUV5e/0='.encode('utf-8')))
+    wa.login(5218112813034, pss)

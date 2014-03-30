@@ -2,11 +2,24 @@
 
 {% block contenido %}
 <h1>{{ encabezado }}</h1>
-<div class="row">
-  
-</div>
-
-<div class="row">
- 
+<div>
+    <label>Whatsapp</label>
+    <div class="row">
+        <form action="/sendNotificationCode" method="post">
+            <label>Country Code</label>
+            <input name="country_code" >
+            <label>Telephone</label>
+            <input name="tel" >
+            <input type="submit" value="Send Activation Code">
+        </form>
+    </div>
+    </br>
+    <div class="row">
+        <form>
+            <label>Activation Code</label>
+            <input name="activation_code">
+            <input type="submit" value="Active">
+        </form>
+    </div>
 </div>
 {% endblock %}
