@@ -75,15 +75,13 @@ class WhatsAppApi(remote.Service):
             cc = request.cc
             number = request.number
 
-            #key = ndb.Key(UserInfo, user._user_id()) ## TODO how to get the same
-
-            userInfo = UserInfo.query(UserInfo.user == user).get()#key.get()
+            userInfo = UserInfo.query(UserInfo.user == user).get()
 
             if not userInfo:
-                userInfo = UserInfo(tel=number, tel_country_code=cc)
+                userInfo = UserInfo(contacto=Contacto(tel=number, tel_country_code=cc))
             else:
-                userInfo.tel = number
-                userInfo.tel_country_code=cc
+                userInfo.contacto.tel = number
+                userInfo.contacto.tel_country_code = cc
             identity = Utilities.processIdentity('')
             cc = str(cc)
             number = str(number)
@@ -107,7 +105,6 @@ class WhatsAppApi(remote.Service):
             response.code = str(result['code'])
             response.kind = str(result['kind'])
 
-
             if response.pw:
                 userInfo.whats_app_info = response.pw
 
@@ -128,9 +125,7 @@ class WhatsAppApi(remote.Service):
             cc = request.cc
             number = request.number
 
-            #key = ndb.Key(UserInfo, user._user_id()) ## TODO how to get the same
-
-            userInfo = UserInfo.query(UserInfo.user == user).get()#key.get()
+            userInfo = UserInfo.query(UserInfo.user == user).get()
 
             identity = Utilities.processIdentity('')
             wr = WARegRequestV2(str(request.cc), str(request.number), str(request.code), identity)
@@ -149,9 +144,9 @@ class WhatsAppApi(remote.Service):
             response.currency = str(result['currency'])
             response.type = str(result['type'])
 
-            userInfo.tel = number
-            userInfo.tel_country_code=cc
-            
+            userInfo.contacto.tel = number
+            userInfo.contacto.tel_country_code = cc
+
             if request.code:
                 userInfo.whats_app_info = str(request.code)
 
