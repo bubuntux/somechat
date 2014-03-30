@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="/media/css/bootstrap.min.css" />
+     <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+      {% block css %}
+      {% endblock %}
+    <title>{{ titulo }}</title>
+  </head>
+  <body>
+      <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Some Chat</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/conversaciones/">Conversar</a></li>
+            <li><a href="/cuentas/">Cuentas</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    {% block contenido %}
+    {% endblock %}
+    <div id="footer">
+      
+    </div>
+
+  </body>
+  <script type="text/javascript" src="/media/js/jquery-2.0.3.min.js"></script>
+  <script type="text/javascript" src="/media/js/bootstrap.min.js"></script>
+  {% block js %}
+  {% endblock %}
+
+</html>
