@@ -1,29 +1,3 @@
-{% extends 'template.html' %}
-
-{% block contenido %}
-<h1>{{ encabezado }}</h1>
-<div>
-    <label>Whatsapp</label>
-    <div class="row">
-        <form action="/sendNotificationCode" method="post">
-            <label>Country Code</label>
-            <input name="country_code" >
-            <label>Telephone</label>
-            <input name="tel" >
-            <input type="submit" value="Send Activation Code">
-        </form>
-    </div>
-    </br>
-    <div class="row">
-        <form>
-            <label>Activation Code</label>
-            <input name="activation_code">
-            <input type="submit" value="Active">
-        </form>
-    </div>
-</div>
-{% endblock %}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Two Column Portfolio Template for Bootstrap 3</title>
+    <title>Add an Account</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../media/css/bootstrap.css" rel="stylesheet">
@@ -44,7 +18,7 @@
 
 <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -53,13 +27,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">SomeChat</a>
+          <font color="#FFFFFF"><h3>Musketeer</h3></font>
         </div>
         <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form">
-        <ul class="nav nav-pills">
-          <li class="active"><a href="home.html">Home</a></li>
-        </ul>
+            <ul class="nav nav-pills pull-right">
+				<li class="active"><a href="home.html">Home</a></li>
+			</ul>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -72,7 +46,6 @@
 
             <div class="col-lg-12">
                 <h1 class="page-header">Add Account
-                    <small>Showcase Your Work Two Columns at a Time</small>
                 </h1>
             </div>
 
@@ -81,18 +54,35 @@
         <div class="row">
 
             <div class="col-lg-6 col-md-6 portfolio-item">
-                <a href="#project-one">
-                    <img class="img-responsive" src="http://i.imgur.com/IzwNbzm.jpg">
-                </a>
+                    <img class="img-responsive" src="../media/Whatsapp-700x400.jpg">
                 <h3><a href="#project-one">Whatsapp</a>
                 </h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-
+		<div class="container">
+		<div class="row">
+        <form action="/sendNotificationCode" method="post">
+            <label>Country Code</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input name="country_code" >
+        </form>
+		</div>
+		<div class="row">
+        <form action="/sendNotificationCode" method="post">
+            <label>Telephone</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input name="tel" >
+            <input type="submit" value="Send Activation Code">
+        </form>
+		</div>
+		<div class="row">
+        <form>
+            <label>Activation Code</label>
+            <input name="activation_code">
+            <input type="submit" value="Active">
+        </form>
+		</div>
+		</div>
+		</div>
             <div class="col-lg-6 col-md-6 portfolio-item">
-                <a href="#project-two">
-                    <img class="img-responsive" src="http://sklep.uploaduj.com/wp-content/uploads/2013/03/money-facebook1-700x400.jpg">
-                </a>
+                    <img class="img-responsive" src="../media/Facebook-700x400.png">
                 <h3><a href="#project-two">Facebook</a>
                 </h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
