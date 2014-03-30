@@ -2,10 +2,7 @@ from google.appengine.ext import ndb
 
 
 class UserInfo(ndb.Model):
-    user_id = ndb.IntegerProperty()
-    pss = ndb.StringProperty()
-    name = ndb.StringProperty()
-    email = ndb.StringProperty()
+    user = ndb.UserProperty()
     tel_country_code = ndb.IntegerProperty()
     tel = ndb.IntegerProperty()
     face_info = ndb.StringProperty()
