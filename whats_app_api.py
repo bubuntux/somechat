@@ -75,13 +75,15 @@ class WhatsAppApi(remote.Service):
             cc = request.cc
             number = request.number
 
-            key = ndb.Key(UserInfo, user.email()) ## TODO how to get the same
+            #key = ndb.Key(UserInfo, user._user_id()) ## TODO how to get the same
 
-            userInfo = key.get()
+            userInfo = UserInfo.query(UserInfo.user == user).get()#key.get()
 
             if not userInfo:
                 userInfo = UserInfo(tel=number, tel_country_code=cc)
-
+            else:
+                userInfo.tel = number
+                userInfo.tel_country_code=cc
             identity = Utilities.processIdentity('')
             cc = str(cc)
             number = str(number)
@@ -105,6 +107,7 @@ class WhatsAppApi(remote.Service):
             response.code = str(result['code'])
             response.kind = str(result['kind'])
 
+
             if response.pw:
                 userInfo.whats_app_info = response.pw
 
@@ -120,23 +123,85 @@ class WhatsAppApi(remote.Service):
                                                   code=messages.IntegerField(3, variant=messages.Variant.INT32, required=True)), CodeRegResponse,
                       path='authCode/reg', http_method='POST', name='authCode.register', auth_level=AUTH_LEVEL.REQUIRED)
     def authCode_register(self, request):
-        identity = Utilities.processIdentity('')
-        wr = WARegRequestV2(str(request.cc), str(request.number), str(request.code), identity)
-        result = wr.send()
-        response = CodeRegResponse()
-        response.price = str(result['price'])
-        response.pw = str(result['pw'])
-        response.retry_after = str(result['retry_after'])
-        response.expiration = str(result['expiration'])
-        response.reason = str(result['reason'])
-        response.status = str(result['status'])
-        response.price_expiration = str(result['price_expiration'])
-        response.login = result['login']
-        response.cost = str(result['cost'])
-        response.kind = str(result['kind'])
-        response.currency = str(result['currency'])
-        response.type = str(result['type'])
-        return response
+        user = users.get_current_user()
+        if user:
+            cc = request.cc
+            number = request.number
 
+            #key = ndb.Key(UserInfo, user._user_id()) ## TODO how to get the same
+
+            userInfo = UserInfo.query(UserInfo.user == user).get()#key.get()
+
+            identity = Utilities.processIdentity('')
+            wr = WARegRequestV2(str(request.cc), str(request.number), str(request.code), identity)
+            result = wr.send()
+            response = CodeRegResponse()
+            response.price = str(result['price'])
+            response.pw = str(result['pw'])
+            response.retry_after = str(result['retry_after'])
+            response.expiration = str(result['expiration'])
+            response.reason = str(result['reason'])
+            response.status = str(result['status'])
+            response.price_expiration = str(result['price_expiration'])
+            response.login = result['login']
+            response.cost = str(result['cost'])
+            response.kind = str(result['kind'])
+            response.currency = str(result['currency'])
+            response.type = str(result['type'])
+
+            userInfo.tel = number
+            userInfo.tel_country_code=cc
+            
+            if request.code:
+                userInfo.whats_app_info = str(request.code)
+
+
+            userInfo.put()
+            return response
+        else:
+            return CodeReqResponse(reason='Invalid user')
+
+    @endpoints.method(endpoints.ResourceContainer(facebook=messages.StringField(1, required=True),
+                                                  number=messages.IntegerField(2, variant=messages.Variant.INT32, required=True),
+                                                  code=messages.IntegerField(3, variant=messages.Variant.INT32, required=True)), CodeRegResponse,
+                      path='add/contact', http_method='POST', name='add.contact', auth_level=AUTH_LEVEL.REQUIRED)
+    def add_contact(self, request):
+        user = users.get_current_user()
+        if user:
+           
+            code = request.code
+            number = request.number
+            facebook = request.facebook
+
+            userInfo = UserInfo.query(UserInfo.user == user).get()
+            usuario = Contacto(tel=number, face_info=facebook, tel_country_code = code)
+            usuario.put()
+            userInfo.contactos.append(usuario)
+            identity = Utilities.processIdentity('')
+            response = CodeRegResponse()
+            userInfo.put()
+            return response
+        else:
+            return CodeReqResponse(reason='Invalid user')
+
+    @endpoints.method(endpoints.ResourceContainer(facebook=messages.StringField(1, required=True),
+                                                  number=messages.IntegerField(2, variant=messages.Variant.INT32, required=True),
+                                                  code=messages.IntegerField(3, variant=messages.Variant.INT32, required=True)), CodeRegResponse,
+                      path='add/contactMobile', http_method='POST', name='add.contactMobile')
+    def add_contactMobile(self, request):
+           
+            code = request.code
+            number = request.number
+            facebook = request.facebook
+
+            userInfo = UserInfo.query(UserInfo.tel == 2281301632).get()
+            usuario = Contacto(tel=number, face_info=facebook, tel_country_code = code)
+            usuario.put()
+            userInfo.contactos.append(usuario)
+            identity = Utilities.processIdentity('')
+            response = CodeRegResponse()
+            userInfo.put()
+            return response
+        
 
 APPLICATION = endpoints.api_server([WhatsAppApi])
