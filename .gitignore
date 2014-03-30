@@ -1,4 +1,6 @@
 index.yaml
+/out
+*.pyc
 
 ## IDE files
 .idea
