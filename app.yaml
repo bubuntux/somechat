@@ -25,7 +25,10 @@ handlers:
   secure: always
 
 - url: /_ah/spi/.*
-  script: whats_app_api.APPLICATION
+  script: facebook_api.APPLICATION
+
+#- url: /_ah/whatsapp/.* #TODO wtf?
+#  script: whats_app_api.APPLICATION
 
 libraries:
 - name: pycrypto
