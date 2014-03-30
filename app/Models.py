@@ -7,7 +7,7 @@ class UserInfo(ndb.Model):
     tel = ndb.IntegerProperty()
     face_info = ndb.StringProperty()
     whats_app_info = ndb.StringProperty()
-    contacts = Contacts()
+    #contacts = Contacts()
 
 class Contacts(ndb.Model):
     users = ndb.StructuredProperty(UserInfo, repeated=True)

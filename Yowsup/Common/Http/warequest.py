@@ -81,12 +81,7 @@ class WARequest(object):
 
 	def getUserAgent(self):
 
-		tokenData = Utilities.readToken()
-
-		if tokenData:
-			agent = tokenData["u"]
-		else:
-			agent = Constants.tokenData["u"]
+		agent = Constants.tokenData["u"]
 		return agent
 
 	def getToken(self, phone, token):

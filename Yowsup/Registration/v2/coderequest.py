@@ -40,12 +40,7 @@ class WACodeRequest(WARequest):
 		self.addParam("method", method);
 		self.addParam("id", idx)
 
-		self.currentToken = Utilities.readToken()
-
-		if self.currentToken:
-			print("Read token from %s " % os.path.expanduser(Constants.tokenStorage))
-		else:
-			self.currentToken = Constants.tokenData
+		self.currentToken = Constants.tokenData
 
 		self.addParam("token", self.getToken(p_in, self.currentToken["t"]))
 
