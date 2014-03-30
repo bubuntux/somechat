@@ -19,6 +19,9 @@ import endpoints
 from protorpc import messages
 from protorpc import remote
 from endpoints.api_config import AUTH_LEVEL
+from google.appengine.api import users
+
+from app.Models import *
 
 from Yowsup.Common.utilities import Utilities
 from Yowsup.Registration.v2.regrequest import WARegRequest as WARegRequestV2
@@ -67,27 +70,50 @@ class WhatsAppApi(remote.Service):
                                                   number=messages.IntegerField(2, variant=messages.Variant.INT32, required=True)), CodeReqResponse,
                       path='authCode/req', http_method='POST', name='authCode.request', auth_level=AUTH_LEVEL.REQUIRED)
     def authCode_request(self, request):
-        identity = Utilities.processIdentity('')
-        wc = WACodeRequestV2(str(request.cc), str(request.number), identity, 'sms')
-        result = wc.send()
-        response = CodeReqResponse()
-        response.price_expiration = str(result['price_expiration'])
-        response.pw = str(result['pw'])
-        response.login = result['login']
-        response.currency = str(result['currency'])
-        response.status = str(result['status'])
-        response.cost = str(result['cost'])
-        response.length = str(result['length'])
-        response.method = str(result['method'])
-        response.type = str(result['type'])
-        response.retry_after = str(result['retry_after'])
-        response.price = str(result['price'])
-        response.expiration = str(result['expiration'])
-        response.reason = str(result['reason'])
-        response.param = str(result['param'])
-        response.code = str(result['code'])
-        response.kind = str(result['kind'])
-        return response
+        user = users.get_current_user()
+        if user:
+            cc = request.cc
+            number = request.number
+
+            key = ndb.Key(UserInfo, user.email()) ## TODO how to get the same
+
+            userInfo = key.get()
+
+            if not userInfo:
+                userInfo = UserInfo(tel=number, tel_country_code=cc)
+
+            identity = Utilities.processIdentity('')
+            cc = str(cc)
+            number = str(number)
+            wc = WACodeRequestV2(cc, number, identity, 'sms')
+            result = wc.send()
+            response = CodeReqResponse()
+            response.price_expiration = str(result['price_expiration'])
+            response.pw = str(result['pw'])
+            response.login = result['login']
+            response.currency = str(result['currency'])
+            response.status = str(result['status'])
+            response.cost = str(result['cost'])
+            response.length = str(result['length'])
+            response.method = str(result['method'])
+            response.type = str(result['type'])
+            response.retry_after = str(result['retry_after'])
+            response.price = str(result['price'])
+            response.expiration = str(result['expiration'])
+            response.reason = str(result['reason'])
+            response.param = str(result['param'])
+            response.code = str(result['code'])
+            response.kind = str(result['kind'])
+
+            if response.pw:
+                userInfo.whats_app_info = response.pw
+
+            userInfo.user = user
+
+            userInfo.put()
+            return response
+        else:
+            return CodeReqResponse(reason='Invalid user')
 
     @endpoints.method(endpoints.ResourceContainer(cc=messages.IntegerField(1, variant=messages.Variant.INT32, required=True),
                                                   number=messages.IntegerField(2, variant=messages.Variant.INT32, required=True),
