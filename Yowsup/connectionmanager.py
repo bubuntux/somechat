@@ -239,7 +239,7 @@ class YowsupConnectionManager:
 			yAuth = YowsupAuth(ConnectionEngine())
 			try:
 				self.state = 1
-				tokenData = Utilities.readToken()
+				tokenData = False
 				resource = tokenData["r"] if tokenData else Constants.tokenData["r"]
 				connection = yAuth.authenticate(username, password, Constants.domain, resource)
 			except socket.gaierror:
