@@ -15,15 +15,12 @@
 # limitations under the License.
 #
 import base64
-import sys
+import unicodedata
 
 import webapp2
-from google.appengine.ext import ndb
 
 from Yowsup.examples.EchoClient import WhatsappEchoClient
 
-if sys.version_info >= (3, 0):
-    raw_input = input
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -39,7 +36,8 @@ class MainPage(webapp2.RequestHandler):
 
 class SendMessage(webapp2.RequestHandler):
     def post(self):
-        wa = WhatsappEchoClient('5212281301632', self.request.get('content'))
+        message = unicodedata.normalize('NFKD', self.request.get('content')).encode('ascii', 'ignore')
+        wa = WhatsappEchoClient('5212281301632', message, False)
         pss = base64.b64decode(bytes('tlu5MSojcuXy13AbquA3SUV5e/0='.encode('utf-8')))
         wa.login(5218112813034, pss)
         self.redirect('/whatsapp')
