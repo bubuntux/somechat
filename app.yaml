@@ -3,10 +3,29 @@ version: 2
 runtime: python27
 threadsafe: true
 api_version: 1
-
 handlers:
-- url: /.*
-  script: example.py
+#Aqui van las carpetas img, css, js y esas cosas
+- url: /media
+  static_dir: media
+
+
+#Url administrar las conversaciones
+- url: /conversaciones.*
+  script: conversaciones.app
+  secure: always
+
+#Url para administrar cuentas
+- url: /cuentas.*
+  script: cuentas.app
+  secure: always
+
+#Url principal
+- url: /
+  script: index.app
+  secure: always
+
+- url: /_ah/spi/.*
+  script: whats_app_api.APPLICATION
 
 libraries:
 - name: pycrypto
